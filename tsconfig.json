@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "target": "es6",
+    "module": "commonjs",
+    "esModuleInterop": true,
+    "noEmitOnError": true,
+    "watch": true,
+    "strict": true,
+    "strictNullChecks": true,
+    "outDir": "./dist",
+    "strictPropertyInitialization": false,
+    "lib": ["dom", "ES6"]
+  }
+}
