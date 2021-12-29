@@ -10,5 +10,6 @@
     "outDir": "./dist",
     "strictPropertyInitialization": false,
     "lib": ["dom", "ES6"]
-  }
+  },
+  "include": ["src/*.ts"]
 }
