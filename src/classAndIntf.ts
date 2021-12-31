@@ -27,7 +27,7 @@ class Employee extends Human {
 const empl = new Employee();
 // 앞에 접근 제어자가 없는 경우 (=all public)
 // empl. // 프로퍼티로 age,department,firstName,lastName, sayHello 확인 가능
-// empl.sayHello(); // 'sayHello' 프로퍼티는 보호되어 'Person'클래스와 서브 클래스에서만 접근 가능합니다.//
+// empl.sayHello(); // 'sayHello' 프로퍼티는 보호되어 'Person'클래스와 서브 클래스에서만 접근 가능합니다.
 
 // * 생성자를 가진 클래스
 class HumanWithConstrutor1 {
@@ -56,8 +56,8 @@ const human2 = new HumanWithConstrutor2('John', 'Smith', 29);
 // console.log(`${human2.age}`) // age 프로퍼티는 private이며 HumanWithConstructor 클래스 내에서만 접근할 수 있습니다.
 // '정답은 없습니다' ... 단순 프로퍼티 초기화의 경우 암시적 선언을 사용함
 
-// * 고정 변수와 싱글톤
-// 클래스의 인스턴스가 일부 프로퍼티를 공유해야 하는 경우 정적 프로퍼티로 선언함 = static!
+// TODO : 고정 변수
+// * 클래스의 인스턴스가 일부 프로퍼티를 공유해야 하는 경우 정적 프로퍼티로 선언함 = static!
 class Gangsta {
   static totalBullets = 100; // Gangsta클래스를 통해 만들어진 인스턴스는 정적프로퍼티를 공유하게 됨.
   shoot() {
@@ -81,7 +81,145 @@ const sg = new SuperGangsta();
 
 g1.shoot(); // Bullets left : 99
 g2.shoot(); // Bullets left : 98
+
+// * static인 클래스 멤버는 서브 클래스에 공유가 되지 않음 -> 아래 예시에서 서로 다른 값을 가져와서 쓰는것 마냥 씀
 sg.shootMany(); // Bullets left : 96 -> Gangsta를 복사해 그대로 가져오기 때문에 82번줄 가져와서 -2
 sg.shoot(); // Bullets left : 97 -> Gangsta를 복사해 그대로 가져오기 때문에 82번줄 가져와서 -1
 sg.shootMany(); // Bullets left: 94 -> 83번줄에서 계산했던 값을 가져와 -2
 sg.shoot(); // Bullets left : 96 -> 84번줄에서 계산한 값을 가져와서 -1
+
+// TODO : 싱글톤
+// * 싱글톤 : 단 하나의 인스턴스를 생성하는 디자인 패턴
+// * 프로그램 전반에서 사용하는 인스턴스를 하나만 구현하고, 생성된 인스턴스 객체는 어디에서든지 참조 가능
+// * new 키워드로 원하는 만큼 인스턴스를 생성하니, new 키워드의 사용을 막아야 함
+// -> new 키워드로 private인 클래스 생성자의 새로운 인스턴스를 만들면 오류 발생
+// * static 키워드로 클래스 메서드를 정적 메서드로 마들면 특정 인스턴스가 아닌 클래스에만 속하도록 만들 수 있음
+
+class AppState {
+  counter = 0; // 앱 상태
+  private static instanceRef: AppState; // AppState의 단일 인스턴스에 대한 참조 저장
+  private constructor() {} // private 생성자는 AppState와 함께 새 연산자 사용 불가
+  static getInstance(): AppState {
+    if (AppState.instanceRef === undefined) {
+      AppState.instanceRef = new AppState(); // AppState객체가 존재하지 않으면 인스턴스화
+    }
+    return AppState.instanceRef;
+  }
+}
+
+// const appState = new AppState(); // 'AppState'클래스의 생성자는 private이며 클래스 선언 내에서만 엑세스 할 수 있습니다'
+
+// getInstance()메서드로 AppState 클래스의 생성자를 사용할 수 있음
+const appState1 = AppState.getInstance();
+const appState2 = AppState.getInstance();
+
+appState1.counter++;
+appState1.counter++;
+appState2.counter++;
+appState2.counter++;
+
+console.log(appState1.counter); // 4
+console.log(appState2.counter); // 4
+
+// TODO : super 메서드와 super 키워드
+class SuperPerson {
+  constructor(
+    public firstName: string,
+    public lastName: string,
+    private age: number
+  ) {}
+  // 부모의 sellStock 메서드
+  sellStock(symbol: string, numberOfShares: number) {
+    console.log(`Selling ${numberOfShares} of ${symbol}`);
+  }
+}
+
+class Employer extends SuperPerson {
+  constructor(
+    firstName: string,
+    lastName: string,
+    age: number,
+    public department: string
+  ) {
+    // Employer의 생성자는 4개의 파라미터를 가지는데, 온전히 employer에서만 쓰이는건 department뿐이고 나머지 3개는 Person 객체를 구성하기 위한것으로 super()메서드를 호출해 Person에 전달함
+    super(firstName, lastName, age);
+  }
+  // 자식의 sellStock 메서드
+  sellStock(symbol: string, shares: number) {
+    super.sellStock(symbol, shares); // 부모에서 sellStock()호출
+    this.reportToCompliance(symbol, shares);
+  }
+
+  private reportToCompliance(symbol: string, shares: number) {
+    console.log(
+      `${this.lastName} from ${this.department} sold ${shares} shares of ${symbol}`
+    );
+  }
+}
+
+const emplr = new Employer('Joe', 'Smith', 29, 'Accounting');
+emplr.sellStock('IBM', 100);
+// Selling 100 of IBM -> Smith from Accounting sold 100 shares of IBM
+
+// TODO : 추상 클래스
+// * 객체로 만들 수 없는 추상적인 개념, 일종의 설계도
+// * abstract 키워드로 선언 ... 프로퍼티와 메서드도 abstract 선언 가능
+// * 추상 클래스로부터 객체를 생성하기 때문에 인스턴스화 될 수 없음
+// * 추상 클래스가 필요한 이유? ... 구체적이지 않는 메서드를 서브 클래스에 위임해 하위에서 더 자세히 구현할 수 있기 때문
+
+abstract class AbstractPerson {
+  constructor(public name: string) {}
+  changeAddress(newAddress: string) {
+    console.log(`Changing address to ${newAddress}`);
+  }
+  giveDayOff() {
+    console.log(`Giving a day off to ${this.name}`);
+  }
+  promote(percent: number) {
+    this.giveDayOff();
+    this.increasePay(percent);
+    // * 추상 메서드를 호출하는 명령문 작성 가능
+    // 추상 클래스는 인스턴스화 할 수 없으므로 추상멤버(=구현되지 않은 메서드)는 절대로 호출 안됨
+  }
+  abstract increasePay(percent: number): void; // 추상메서드
+}
+
+class AbstractEmployee extends AbstractPerson {
+  increasePay(percent: number): void {
+    console.log(`increasing the salary of ${this.name} by ${percent}%`);
+  }
+}
+
+class AbstractContractor extends AbstractPerson {
+  increasePay(percent: number): void {
+    console.log(`increasing the hourly rate of ${this.name} by ${percent}%`);
+  }
+}
+
+// class AbstractTest extends AbstractPerson{} // 이렇게 increasePay에 대해 작성하지 않으면 "비추상클래스 AbstractTest는 'AbstractPerson'클래스에서 상속된 추상 멤버 'increasePay'를 구현하지 않습니다" 라는 에러를 보임
+
+const abstractWorkers: AbstractPerson[] = []; // "배열 workers는 AbstractPerson타입의 배열로 자식 객체의 인스턴스를 저장합니다."
+abstractWorkers[0] = new AbstractEmployee('John');
+abstractWorkers[1] = new AbstractContractor('Mary');
+
+abstractWorkers.forEach((worker) => worker.promote(5)); // 각 객체마다 promote메서드 호출
+
+// TODO : 메서드 오버로딩
+// * 파라미터의 유형과 갯수가 다르지만 이름이 같은 메서드를 여러개 가질 수 있게 만드는 것
+// 원래 타입 언어에서는 타입이 없는 파라미터를 가진 클래스 메서드 호출 불가
+// 하지만 js를 위한 syntactic sugar로서 함수 내 파라미터 개수를 처음 선언보다 더 많이, 혹은 더 적게 만들 수 있음
+
+class ProductService {
+  // getProducts() {
+  //   // 파라미터 없음
+  //   console.log(`getting all products`);
+  // }
+  getProducts(id: number) {
+    // 파라미터 있음
+    console.log(`getting the product info for ${id}`);
+  }
+}
+const prodService = new ProductService();
+// id 파라미터가 필요한 getProducts()가 실행됨
+prodService.getProducts(123); // getting the product ifo for 123
+// prodService.getProducts(); // getting the product ifo for undefined
