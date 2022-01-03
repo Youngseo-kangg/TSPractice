@@ -1,11 +1,4 @@
 "use strict";
-// TODO : 클래스
-// * 클래스 관련 참고
-// 객체 지향 언어는 멤버 변수로 클래스를 선언할 수 있습니다. (-> customTypes.ts에서 구조적 타입 시스템 예시 참고)
-// js에서 클래스 내 생성자(constructor)를 선언할 수 있고, 이 선언자는 인스턴스 생성 중 한번만 호출됨
-// 컴파일 타겟이 ES5 : ts컴파일러가 js 생성자 함수로 변환
-// 컴파일 타겟이 ES6 : ts컴파일러가 자바스크립트 클래스로 컴파일
-// 클래스 생성자의 파라미터를 readonly, public, protected, private 키워드로 정의하면 ts는 각 파라미터에 대한 클래스 프로퍼티를 만듬
 // * 클래스 상속 + public, private, protected 접근 제어자
 // 아래에서 Human은 슈퍼(부모)클래스, Employee는 서브(자식)클래스
 class Human {
@@ -181,17 +174,70 @@ abstractWorkers.forEach((worker) => worker.promote(5)); // 각 객체마다 prom
 // * 파라미터의 유형과 갯수가 다르지만 이름이 같은 메서드를 여러개 가질 수 있게 만드는 것
 // 원래 타입 언어에서는 타입이 없는 파라미터를 가진 클래스 메서드 호출 불가
 // 하지만 js를 위한 syntactic sugar로서 함수 내 파라미터 개수를 처음 선언보다 더 많이, 혹은 더 적게 만들 수 있음
-class ProductService {
+class ProductService1 {
     // getProducts() {
     //   // 파라미터 없음
     //   console.log(`getting all products`);
-    // }
+    // } // TS에서는 오류가 나지만 js에서는 아래 getProducts로 변환되어 컴파일 돼 에러 없음
     getProducts(id) {
         // 파라미터 있음
         console.log(`getting the product info for ${id}`);
     }
 }
-const prodService = new ProductService();
+const prodService = new ProductService1();
 // id 파라미터가 필요한 getProducts()가 실행됨
-prodService.getProducts(123); // getting the product ifo for 123
-// prodService.getProducts(); // getting the product ifo for undefined
+prodService.getProducts(123); // getting the product info for 123
+// prodService.getProducts(); // getting the product info for undefined
+class ProductService2 {
+    // getProducts(); // 반환 주석이 없어 오류남
+    // getProducts(id: number); // 반환 주석이 없어 오류남
+    getProducts(id) {
+        // 물음표가 없으면 '오버로드 시그니처가 함수 구현과 호환되지 않습니다' 라는 오류 표시하게 됨
+        if (typeof id === 'number') {
+            console.log(`Getting the product info for ${id}`);
+        }
+        else {
+            console.log(`Getting all products`);
+        }
+    }
+}
+const prodService2 = new ProductService2();
+prodService2.getProducts(123);
+prodService2.getProducts();
+class ProductService3 {
+    // 메소드 구현
+    getProducts(product) {
+        if (typeof product === 'number') {
+            // 파라미터 id로 메서드 호출 되었나 확인
+            console.log(`Getting the product info for id ${product}`);
+            return { id: product, description: 'great product' };
+        }
+        else if (typeof product === 'string') {
+            // 파라미터 description으로 호출 되었나 확인
+            console.log(`Getting product with description ${product}`);
+            return [
+                { id: 123, description: 'blue jeans' },
+                { id: 789, description: 'blue jeans' },
+            ];
+        }
+        else {
+            return {
+                id: -1,
+                description: `Error: getProducts() accept only number or string as args`,
+            };
+        }
+    }
+}
+const prodService3 = new ProductService3();
+console.log(prodService3.getProducts(123));
+console.log(prodService3.getProducts('blue jeans'));
+// * 파라미터 타입과 함수 반환값에 유니온을 사용해 메서드를 구현할 수 있는데 굳이 오버로딩을?
+// * -> tsc가 올바른 방법으로 메서드를 호출 할 수 있게 해주고, 어떤 파라미터 타입이 어떤 타입의 값을 반환하는지 이해하기 쉽게 보여줌
+// TODO : 메서드 오버로딩 생성자
+class ProductService4 {
+    constructor(id, description) {
+        // 모든 가능한 파라미터를 다루는 생성자 구현
+    }
+}
+// * ts에서 오버로딩 메서드나 생성자를 사용할 때 주의가 필요함
+// 오버로딩을 사용하면 여러 방법으로 메서드 호출이 가능하지만 로직을 읽고 판단하는게 힘들어 질 수 있어 사용 절제하는 것이 일반적임.
