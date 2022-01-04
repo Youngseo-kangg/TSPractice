@@ -109,49 +109,63 @@ class SecretServiceCar implements Flyable2, Swimmable {
 // ? -> 해당 인터페이스에 있는 프로퍼티 및 메소드를 전부 가지고 있거나 구현해야 하고, 다중상속도 지원함
 
 // TODO : 인터페이스 프로그래밍
-class IntfProduct {
+class Product {
   id: number;
   description: string;
 } // 클래스를 통한 커스텀 클래스 선언
 
-class IntfProductService {
-  getProducts1(): IntfProduct[] {
+class ProductService {
+  getProducts(): Product[] {
     return [];
   }
-  getProductById1(id: number): IntfProduct {
+  getProductById(id: number): Product {
     return { id: 123, description: 'Good Product' };
   }
 }
 
-class MockIntfProductService implements IntfProductService {
+class MockProductService implements ProductService {
   // ? 만약 거꾸로 IntfProductService가 MockIntfProductService 클래스의 동일한 두 메서드를 선언한다면 오류가 발생할 수 있음
-  getProducts1(): IntfProduct[] {
+  getProducts(): Product[] {
     return [];
   }
-  getProductById1(id: number): IntfProduct {
+  getProductById(id: number): Product {
     return { id: 456, description: 'Not a real Product' };
   }
 } // 가장 좋은 방법은 처음부터 인터페이스에 집중해 코드를 작성하는것
 
-const interfaceProductService = new IntfProductService();
-const interfaceProducts = interfaceProductService.getProducts1();
+const productService = new ProductService();
+const products = productService.getProducts();
 
-interface IProduct {
+interface Product {
   id: number;
   description: string;
 } // 인터페이스를 통한 커스텀 타입 선언
 
 interface IProductService {
-  getProducts(): IProduct[];
-  getProductById(): IProduct;
+  getProducts(): Product[];
+  getProductById(id: number): Product;
 } // API를 인터페이스로 선언
 
-// class IntProductService implements IProductService {
-//   // ? 만약 거꾸로 IntfProductService가 MockIntfProductService 클래스의 동일한 두 메서드를 선언한다면 오류가 발생할 수 있음
-//   getProducts(): IProduct[] {
-//     return [];
-//   }
-//   getProductById(id: number): IProduct {
-//     return { id: 0, description: 'Not a real Product' };
-//   } // 왜인지는 모르겠으나 이부분에서 오류남... 뭐지ㅠㅜㅠㅜ
-// }
+class IntfProductService implements IProductService {
+  // ? 만약 거꾸로 IntfProductService가 MockIntfProductService 클래스의 동일한 두 메서드를 선언한다면 오류가 발생할 수 있음
+  getProducts(): Product[] {
+    return [];
+  }
+  getProductById(id: number): Product {
+    return { id: 0, description: 'Not a real Product' };
+  }
+}
+
+// * 인터페이스 프로그래밍의 좋은 예 : 팩토리 함수 (factory function)
+function getProductService(isProduction: boolean): IProductService {
+  // 실제로 이 둘중 어떤 값이 반환되더라도 함수 시그니처에서는 IProductService를 반환한다고 작성 -> 유연하고 쉽게 확장될 수 있도록 됨
+  // 추가 번경 없이 컴파일 됨
+  if (isProduction) {
+    return new ProductService();
+  } else {
+    return new MockProductService();
+  }
+}
+let factoryProductService: IProductService; // 인터페이스 타입 나타내는 상수
+const isProd = true; // 실제 앱에서는 속성 파일이나 환경 변수를 통해 값을 가져올 것이고, 바뀌는 값에 따라 런타임동안 동작이 바뀌게 될 것임
+factoryProductService = getProductService(isProd); // factoryProductService 인스턴스 가져옴
