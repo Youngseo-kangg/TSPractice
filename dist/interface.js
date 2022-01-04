@@ -58,3 +58,39 @@ class SecretServiceCar {
         console.log(`Swimming ${howFar} feet`);
     }
 }
+// * 참고) Implements와 extends의 차이?
+// ? extends는 상속의 한 형태로, 부모에서 선언된 메소드 혹은 변수를 자식은 모두 그대로 상속 받아 사용 가능
+// ? -> 다중 상속을 지원하지 않음
+// ? Implements는 부모의 메소드나 변수를 그대로 갖다 쓰는 것이 아니고, 반드시 오버라이드 해서 사용해야 함.
+// ? -> 해당 인터페이스에 있는 프로퍼티 및 메소드를 전부 가지고 있거나 구현해야 하고, 다중상속도 지원함
+// TODO : 인터페이스 프로그래밍
+class IntfProduct {
+} // 클래스를 통한 커스텀 클래스 선언
+class IntfProductService {
+    getProducts1() {
+        return [];
+    }
+    getProductById1(id) {
+        return { id: 123, description: 'Good Product' };
+    }
+}
+class MockIntfProductService {
+    // ? 만약 거꾸로 IntfProductService가 MockIntfProductService 클래스의 동일한 두 메서드를 선언한다면 오류가 발생할 수 있음
+    getProducts1() {
+        return [];
+    }
+    getProductById1(id) {
+        return { id: 456, description: 'Not a real Product' };
+    }
+} // 가장 좋은 방법은 처음부터 인터페이스에 집중해 코드를 작성하는것
+const interfaceProductService = new IntfProductService();
+const interfaceProducts = interfaceProductService.getProducts1();
+// class IntProductService implements IProductService {
+//   // ? 만약 거꾸로 IntfProductService가 MockIntfProductService 클래스의 동일한 두 메서드를 선언한다면 오류가 발생할 수 있음
+//   getProducts(): IProduct[] {
+//     return [];
+//   }
+//   getProductById(id: number): IProduct {
+//     return { id: 0, description: 'Not a real Product' };
+//   } // 왜인지는 모르겠으나 이부분에서 오류남... 뭐지ㅠㅜㅠㅜ
+// }
