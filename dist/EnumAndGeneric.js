@@ -86,3 +86,122 @@ console.log(1 /* a */); // 1
 // console.log(RandomNumber[1]); // "const 열거형 멤버는 문자열 리터럴을 통해서만 엑세스할 수 있습니다"
 // TODO : 제네릭
 // * 제네릭을 사용하면 다양한 타입을 지원하는 함수를 작성할 수 있음
+// * ts배열은 모든 타입의 객체를 가질 수 있지만, 제네릭 타입은 Array<Person> 처럼 배열에서 허용되는 특정 타입을 지정해야 함
+let genericArr1; // 제네릭 Array<>키워드로 기호 안에 타입 파라미터를 지정하거나,
+let genericArr2; // number[]처럼 배열 요소의 타입을 직접 지정할 수도 있음
+// ? 배열 내 모든 요소가 같은 타입을 가지면 genericArr2처럼, 배열 내 요소가 서로 다른 타입을 저장한다면 genericArr1처럼
+let genericArr3; // 이게 더 보기 좋음!
+class Drink {
+}
+class Water extends Drink {
+}
+class Haribo {
+}
+const cart = []; // ? <Drink>파라미터가 추가된 제네릭 배열은 Drink또는 상응하는 타입의 인스턴스만 저장
+cart[0] = new Drink();
+cart[1] = new Water();
+cart[2] = new Haribo();
+cart[3] = { name: 'sprite' }; // 객체 리터럴도 가능
+class Rectangle {
+    // compareTo(value: any): number {
+    compareTo(value) {
+        // 사각형 비교 알고리즘
+        return 1;
+    }
+} // 사각형 전용 넓이비교함수 Rectangle.compareTo
+class Triangle {
+    // compareTo(value: any): number {
+    compareTo(value) {
+        // 삼각형 알고리즘
+        return 2;
+    }
+} // 삼각형 전용 넓이비교함수 Triangle.compareTo
+class Programmer {
+    constructor(name, salary) {
+        this.name = name;
+        this.salary = salary;
+    }
+    compareTo(value) {
+        return this.salary - value.salary;
+    }
+}
+const prog1 = new Programmer('John', 20000);
+const prog2 = new Programmer('Alex', 30000);
+prog1.compareTo(prog2) > 0
+    ? console.log(`${prog1.name} is richer`)
+    : prog1.compareTo(prog2) == 0
+        ? console.log(`${prog1.name} and ${prog1.name} earn the same amounts`)
+        : console.log(`${prog1.name} is poorer`);
+// "John is poorer"
+// TODO : 제네릭 함수 생성
+// * 함수 파라미터 타입과 반환 값 타입에 동일한 문자 T를 사용하면 함수 호출 중 상세타입이 사용되어도 반환 값의 타입이 동일하도록 제한함
+function printMe(content) {
+    console.log(content);
+    return content;
+}
+// ? 위 함수를 화살표함수로 사용한다면
+const printMeArrow = (content) => {
+    console.log(content);
+    return content;
+};
+const genericF1 = printMe('Hello'); // "Hello" ... 문자열 파라미터로 printMe 호출
+const genericF2 = printMeArrow('Hello'); // 화살표함수로 호출
+const genericF3 = printMe('Hello'); // 명시적 타입 추가 가능하지만 필요는 없음
+class Printer {
+    constructor(name) {
+        this.name = name;
+    }
+}
+const genericF4 = printMe(new Printer('Joe')); // Printer {name: 'Joe'}
+// TODO : 제네릭 타입을 사용한 클래스와 함수
+class Pair {
+    // key, value
+    constructor(key, value) {
+        this.key = key;
+        this.value = value;
+    }
+} // 처음에는 K,V등 특정 문자로 제네릭 타입 파라미터를 사용하다가, Pair클래스를 선언하고 컴파일 하면 K와 V가 삭제되고 선언된 타입으로 대체됨
+function comparePair(pair1, pair2) {
+    return pair1.key === pair2.key && pair1.value === pair2.value;
+}
+let pair1 = new Pair(1, 'Apple');
+let pair2 = new Pair(1, 'Orange');
+// ? 상세 파라미터를 명시적으로 지정
+console.log(comparePair(pair1, pair2)); // false
+let pair3 = new Pair('first', 'apple');
+let pair4 = new Pair('first', 'apple');
+// ? 상세 파라미터 암시
+console.log(comparePair(pair3, pair4)); // true
+var UserRole;
+(function (UserRole) {
+    UserRole["Administrator"] = "admin";
+    UserRole["Manager"] = "manager";
+})(UserRole || (UserRole = {}));
+function loadUser() {
+    // 제네릭 함수 선언
+    return JSON.parse('{ "name": "john", "role": "admin" }');
+}
+const user = loadUser(); // 제네릭 함수 호출 + 여기서 Manager타입 사용
+// 반환되는 제너릭 타입 T는 상세타입 Manager로 바뀌게 됨
+switch (user.role) {
+    case UserRole.Administrator:
+        console.log('Show control panel');
+        break;
+    case UserRole.Manager:
+        console.log('Hide control panel');
+        break;
+}
+// "Show control panel"
+// TODO : 고차함수 내 반환 타입 강제
+const outerFunc = (someValue) => (multiplier) => someValue * multiplier;
+const innerFunc = outerFunc(10);
+let result = innerFunc(5);
+console.log(result); // 50
+// 파라미터가 없는 함수 호출
+const noArgFunc = () => (c) => c + 5;
+// 숫자 파라미터를 가진 함수 호출
+const numArgFunc = (someValue) => (multiplier) => someValue * multiplier;
+// 문자열 파라미터를 가진 함수 호출
+const stringArgFunc = (someText) => (padding) => someText.length + padding;
+// 컴파일 오류 ... numFunc는 다른 시그니처야함.
+// const createSumString: numFunc<number> = () => (x: number) => 'Hello'; //error

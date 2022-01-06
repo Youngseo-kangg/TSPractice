@@ -78,17 +78,17 @@ const cust1: Pers = new Custo();
 
 // TODO : 커스텀 타입의 유니온
 // * 식별 가능한 유니온 = 공통의 식별자를 가진 멤버로 이루어진 타입
-interface Rectangle {
+interface CustomRectangle {
   kind: 'rectangle';
   width: number;
   height: number;
 }
-interface Circle {
+interface CustomCircle {
   kind: 'circle';
   radius: number;
 }
 
-type Shape = Rectangle | Circle; // 공통의 식별자 kind를 가지고 있음
+type Shape = CustomRectangle | CustomCircle; // 공통의 식별자 kind를 가지고 있음
 
 function area(shape: Shape): number {
   switch (shape.kind) {
@@ -99,8 +99,12 @@ function area(shape: Shape): number {
   }
 }
 
-const myRectangle: Rectangle = { kind: 'rectangle', width: 10, height: 20 };
+const myRectangle: CustomRectangle = {
+  kind: 'rectangle',
+  width: 10,
+  height: 20,
+};
 console.log(`Rectangle's area is ${area(myRectangle)}`);
 
-const myCircle: Circle = { kind: 'circle', radius: 10 };
+const myCircle: CustomCircle = { kind: 'circle', radius: 10 };
 console.log(`Circle's area is ${area(myCircle)}`);

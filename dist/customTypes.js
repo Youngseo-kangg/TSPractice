@@ -52,7 +52,11 @@ function area(shape) {
             return Math.PI * Math.pow(shape.radius, 2);
     }
 }
-const myRectangle = { kind: 'rectangle', width: 10, height: 20 };
+const myRectangle = {
+    kind: 'rectangle',
+    width: 10,
+    height: 20,
+};
 console.log(`Rectangle's area is ${area(myRectangle)}`);
 const myCircle = { kind: 'circle', radius: 10 };
 console.log(`Circle's area is ${area(myCircle)}`);
