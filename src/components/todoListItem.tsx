@@ -10,14 +10,9 @@ export const TodoListItem: React.FC<TodoListItemProps> = ({
   toggleComplete,
 }) => {
   return (
-    <li>
-      <p className={todo.complete ? 'completed' : 'current'}></p>
-      <input
-        type='checkbox'
-        checked={todo.complete}
-        onChange={() => toggleComplete(todo)}
-      />{' '}
-      {todo.text}
+    <li className={todo.complete ? 'completed' : 'current'}>
+      <p>{todo.text}</p>
+      <button onClick={() => toggleComplete(todo)}>완료</button>
     </li>
   );
 };
