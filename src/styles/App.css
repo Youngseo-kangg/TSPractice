@@ -1,0 +1,31 @@
+.App {
+  display: grid;
+  place-items: center;
+  background-color: #e5d0ad;
+  font-family: 'Noto Serif KR', serif;
+  width: 100vw;
+  height: 100vh; }
+
+.AppHeader {
+  width: 100%; }
+
+@media (max-width: 757px) {
+  #AppWrapper {
+    width: 90vw;
+    height: 80vh;
+    box-shadow: 0px 10px 10px rgba(0, 0, 0, 0.1);
+    background-color: #f5ebdc; } }
+
+@media (min-width: 758px) and (max-width: 1023px) {
+  #AppWrapper {
+    width: 80vw;
+    height: 80vh;
+    box-shadow: 0px 10px 10px rgba(0, 0, 0, 0.1);
+    background-color: #f5ebdc; } }
+
+@media (min-width: 1024px) {
+  #AppWrapper {
+    width: 70vw;
+    height: 80vh;
+    box-shadow: 0px 10px 10px rgba(0, 0, 0, 0.1);
+    background-color: #f5ebdc; } }

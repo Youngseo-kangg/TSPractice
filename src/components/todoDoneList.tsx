@@ -14,15 +14,22 @@ export const TodoDoneList: React.FC<TodoListProps> = ({
 }) => {
   return (
     <div>
+      <h3>To-done</h3>
       <ul>
-        {todos.map((todo) => (
-          <TodoListDoneItem
-            key={todo.text}
-            todo={todo}
-            removeTodo={removeTodo}
-            toggleComplete={toggleComplete}
-          />
-        ))}
+        {todos.length === 0 ? (
+          <img src='../../static/catWorking.gif' />
+        ) : (
+          <>
+            {todos.map((todo) => (
+              <TodoListDoneItem
+                key={todo.text}
+                todo={todo}
+                removeTodo={removeTodo}
+                toggleComplete={toggleComplete}
+              />
+            ))}
+          </>
+        )}
       </ul>
     </div>
   );

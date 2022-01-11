@@ -12,6 +12,7 @@ export const TodoCurrList: React.FC<TodoListProps> = ({
 }) => {
   return (
     <div>
+      <h3>To-do</h3>
       {todos.length === 0 ? (
         <div>할일을 새로 추가해보세요!</div>
       ) : (

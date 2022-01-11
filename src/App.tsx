@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { TodoForm } from './components/todoForm';
 import { TodoCurrList } from './components/todoCurrList';
 import { TodoDoneList } from './components/todoDoneList';
+import './styles/App.css';
 
 function App() {
   const [todos, setTodos] = useState<Array<Todo>>([]);
@@ -28,19 +29,23 @@ function App() {
 
   return (
     <div className='App'>
-      <header className='App-header'>
-        <h2>TODO App</h2>
-        <TodoForm addTodo={addTodo} />
-        <TodoCurrList
-          todos={todos.filter((el) => !el.complete)}
-          toggleComplete={toggleComplete}
-        />
-        <TodoDoneList
-          todos={todos.filter((el) => el.complete)}
-          toggleComplete={toggleComplete}
-          removeTodo={removeTodo}
-        />
-      </header>
+      <div id='AppWrapper'>
+        <header className='AppHeader'>
+          <h2>TODO App</h2>
+        </header>
+        <main>
+          <TodoForm addTodo={addTodo} />
+          <TodoCurrList
+            todos={todos.filter((el) => !el.complete)}
+            toggleComplete={toggleComplete}
+          />
+          <TodoDoneList
+            todos={todos.filter((el) => el.complete)}
+            toggleComplete={toggleComplete}
+            removeTodo={removeTodo}
+          />
+        </main>
+      </div>
     </div>
   );
 }
