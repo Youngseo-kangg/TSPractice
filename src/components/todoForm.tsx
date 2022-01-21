@@ -1,4 +1,5 @@
 import React, { ChangeEvent, FormEvent, useState } from 'react';
+import style from '../styles/todoForm.module.scss';
 
 interface TodoFormProps {
   addTodo: AddTodo;
@@ -14,15 +15,17 @@ export const TodoForm: React.FC<TodoFormProps> = ({ addTodo }) => {
     addTodo(newTodo);
     setNewTodo('');
   };
+
   return (
-    <form>
+    <form className={style.todoForm}>
       <input
+        id={style.todoFormInput}
         type='text'
         value={newTodo}
         placeholder='할일을 입력하세요'
         onChange={handleChange}
       />
-      <button type='submit' onClick={handleSubmit}>
+      <button id={style.todoFormBtn} type='submit' onClick={handleSubmit}>
         추가하기
       </button>
     </form>

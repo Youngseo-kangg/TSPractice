@@ -1,0 +1,28 @@
+.todoForm {
+  display: grid;
+  column-gap: 10px;
+  grid-template-columns: 1fr 100px;
+}
+
+#todoFormInput {
+  border: 2px solid #654321;
+  padding: 13px 15px;
+  font-size: 18px;
+  border-radius: 2px;
+  transition: all 0.2s;
+  box-shadow: 0px 5px 5px rgba(0, 0, 0, 0.1);
+  &:hover {
+    box-shadow: 0px 5px 5px rgba(0, 0, 0, 0.2);
+  }
+}
+
+#todoFormBtn {
+  background: #654321;
+  color: #fff;
+  border-radius: 2px;
+  transition: all 0.2s;
+  box-shadow: 0px 5px 5px rgba(0, 0, 0, 0.1);
+  &:hover {
+    box-shadow: 0px 5px 5px rgba(0, 0, 0, 0.2);
+  }
+}

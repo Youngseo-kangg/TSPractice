@@ -17,6 +17,10 @@ function App() {
     setTodos(newList);
   };
 
+  const removeTodoAll: RemoveTodoAll = () => {
+    setTodos([]);
+  };
+
   const toggleComplete: ToggleComplete = (selectedTodo) => {
     const updatedTodos = todos.map((todo) => {
       if (todo === selectedTodo) {
@@ -35,15 +39,18 @@ function App() {
         </header>
         <main>
           <TodoForm addTodo={addTodo} />
-          <TodoCurrList
-            todos={todos.filter((el) => !el.complete)}
-            toggleComplete={toggleComplete}
-          />
-          <TodoDoneList
-            todos={todos.filter((el) => el.complete)}
-            toggleComplete={toggleComplete}
-            removeTodo={removeTodo}
-          />
+          <div className='listDivider'>
+            <TodoCurrList
+              todos={todos.filter((el) => !el.complete)}
+              toggleComplete={toggleComplete}
+              removeTodoAll={removeTodoAll}
+            />
+            <TodoDoneList
+              todos={todos.filter((el) => el.complete)}
+              toggleComplete={toggleComplete}
+              removeTodo={removeTodo}
+            />
+          </div>
         </main>
       </div>
     </div>

@@ -1,4 +1,5 @@
 import React from 'react';
+import style from '../styles/todoListItem.module.scss';
 
 interface TodoListItemProps {
   todo: Todo;
@@ -10,7 +11,13 @@ export const TodoListItem: React.FC<TodoListItemProps> = ({
   toggleComplete,
 }) => {
   return (
-    <li className={todo.complete ? 'completed' : 'current'}>
+    <li
+      className={
+        todo.complete
+          ? `${style.listItem} ${style.completed}`
+          : `${style.listItem} ${style.current}`
+      }
+    >
       <p>{todo.text}</p>
       <button onClick={() => toggleComplete(todo)}>완료</button>
     </li>

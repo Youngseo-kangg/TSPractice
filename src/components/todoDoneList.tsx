@@ -13,11 +13,11 @@ export const TodoDoneList: React.FC<TodoListProps> = ({
   removeTodo,
 }) => {
   return (
-    <div>
+    <section>
       <h3>To-done</h3>
       <ul>
         {todos.length === 0 ? (
-          <img src='../../static/catWorking.gif' />
+          <div>일합시다 일!</div>
         ) : (
           <>
             {todos.map((todo) => (
@@ -31,6 +31,6 @@ export const TodoDoneList: React.FC<TodoListProps> = ({
           </>
         )}
       </ul>
-    </div>
+    </section>
   );
 };
