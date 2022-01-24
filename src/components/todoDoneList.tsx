@@ -2,30 +2,30 @@ import React from 'react';
 import { TodoListDoneItem } from './todoListDoneItem';
 
 interface TodoListProps {
-  todos: Array<Todo>;
-  toggleComplete: ToggleComplete;
+  todosDone: Array<Todo>;
+  moveToDo: MoveToDo;
   removeTodo: RemoveTodo;
 }
 
 export const TodoDoneList: React.FC<TodoListProps> = ({
-  todos,
-  toggleComplete,
+  todosDone,
+  moveToDo,
   removeTodo,
 }) => {
   return (
     <section>
       <h3>To-done</h3>
       <ul>
-        {todos.length === 0 ? (
+        {todosDone.length === 0 ? (
           <div>일합시다 일!</div>
         ) : (
           <>
-            {todos.map((todo) => (
+            {todosDone.map((todo) => (
               <TodoListDoneItem
                 key={todo.text}
                 todo={todo}
                 removeTodo={removeTodo}
-                toggleComplete={toggleComplete}
+                moveToDo={moveToDo}
               />
             ))}
           </>

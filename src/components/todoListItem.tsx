@@ -3,12 +3,12 @@ import style from '../styles/todoListItem.module.scss';
 
 interface TodoListItemProps {
   todo: Todo;
-  toggleComplete: ToggleComplete;
+  moveToDone: MoveToDone;
 }
 
 export const TodoListItem: React.FC<TodoListItemProps> = ({
   todo,
-  toggleComplete,
+  moveToDone,
 }) => {
   return (
     <li
@@ -19,7 +19,7 @@ export const TodoListItem: React.FC<TodoListItemProps> = ({
       }
     >
       <p>{todo.text}</p>
-      <button onClick={() => toggleComplete(todo)}>완료</button>
+      <button onClick={() => moveToDone(todo)}>완료</button>
     </li>
   );
 };

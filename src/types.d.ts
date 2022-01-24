@@ -5,4 +5,5 @@ type Todo = {
   text: string;
   complete: boolean;
 };
-type ToggleComplete = (selectedTodo: Todo) => void;
+type MoveToDone = (selectedTodo: Todo) => void;
+type MoveToDo = (selectedTodo: Todo) => void;

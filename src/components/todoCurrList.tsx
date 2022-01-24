@@ -3,13 +3,13 @@ import { TodoListItem } from './todoListItem';
 
 interface TodoListProps {
   todos: Array<Todo>;
-  toggleComplete: ToggleComplete;
+  moveToDone: MoveToDone;
   removeTodoAll: RemoveTodoAll;
 }
 
 export const TodoCurrList: React.FC<TodoListProps> = ({
   todos,
-  toggleComplete,
+  moveToDone,
   removeTodoAll,
 }) => {
   return (
@@ -30,7 +30,7 @@ export const TodoCurrList: React.FC<TodoListProps> = ({
               <TodoListItem
                 key={todo.text}
                 todo={todo}
-                toggleComplete={toggleComplete}
+                moveToDone={moveToDone}
               />
             ))}
           </ul>
