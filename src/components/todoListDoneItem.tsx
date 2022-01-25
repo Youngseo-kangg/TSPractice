@@ -16,14 +16,18 @@ export const TodoListDoneItem: React.FC<todoPropsDone> = ({
     <li
       className={
         todo.complete
-          ? `${style.listItem} ${style.completed}`
-          : `${style.listItem} ${style.current}`
+          ? `${style.listItemDone} ${style.completed}`
+          : `${style.listItemDone} ${style.current}`
       }
     >
       <p>{todo.text}</p>
-      <div>
-        <button onClick={() => removeTodo(todo.text)}>지우기</button>
-        <button onClick={() => moveToDo(todo)}>다시하기</button>
+      <div className={style.itemBtnWrapper}>
+        <button className={style.itemBtn} onClick={() => removeTodo(todo.text)}>
+          지우기
+        </button>
+        <button className={style.itemBtn} onClick={() => moveToDo(todo)}>
+          다시하기
+        </button>
       </div>
     </li>
   );

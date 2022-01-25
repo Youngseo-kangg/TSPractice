@@ -19,7 +19,9 @@ export const TodoListItem: React.FC<TodoListItemProps> = ({
       }
     >
       <p>{todo.text}</p>
-      <button onClick={() => moveToDone(todo)}>완료</button>
+      <button className={style.itemBtn} onClick={() => moveToDone(todo)}>
+        완료
+      </button>
     </li>
   );
 };
