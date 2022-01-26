@@ -2,7 +2,8 @@
 
 .todoListSection {
   display: grid;
-  grid-template-rows: 50px 1fr;
+  grid-template-rows: 50px 1fr 30px;
+  row-gap: 10px;
 }
 .todoListTitle {
   display: grid;
@@ -30,4 +31,14 @@
   grid-template-rows: 40px;
   grid-auto-rows: 40px;
   row-gap: 5px;
+}
+.todoListPagWrapper {
+  @include gridCenter;
+  .todoListPag {
+    min-width: 100px;
+    width: 100%;
+    display: flex;
+    place-items: center;
+    justify-content: space-evenly;
+  }
 }

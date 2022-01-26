@@ -6,7 +6,6 @@ import './styles/App.css';
 
 function App() {
   const [todos, setTodos] = useState<Array<Todo>>([]);
-  const [todosDone, setTodosDone] = useState<Array<Todo>>([]);
 
   const addTodo: AddTodo = (newTodo) => {
     if (newTodo !== '') {
@@ -16,26 +15,36 @@ function App() {
 
   const removeTodo: RemoveTodo = (removeTodo) => {
     // * todoDone에서 removeTodo들어온걸로 제외시키기
-    let newList = todosDone.filter((el) => el.text !== removeTodo); // 제외한 리스트
-    setTodosDone(newList);
+    let newList = todos.filter((el) => el.text !== removeTodo); // 제외한 리스트
+    setTodos(newList);
   };
 
   const removeTodoAll: RemoveTodoAll = () => {
-    // * todo 모두 없애기
-    setTodos([]);
+    // * complete:false인 상태 모두 없애기
+    const target = todos.filter((todo) => todo.complete === false);
+    setTodos(target);
   };
 
   const moveToDone: MoveToDone = (selectedTodo) => {
-    // * todo에서 todoDone으로 변경시키기
-    const target = todos.filter((todo) => todo.text !== selectedTodo.text);
-    setTodos(target); // todo에서 selected빠진걸로 업데이트
-    setTodosDone([...todosDone, { text: selectedTodo.text, complete: true }]); // todoDone에 추가하기
+    // * complete:true로 변경시키기
+    const target = todos.filter((el) => {
+      if (el.text === selectedTodo.text) {
+        el.complete = true;
+        return true;
+      } else return true;
+    });
+    setTodos(target);
   };
 
   const moveToDo: MoveToDo = (selectedTodo) => {
-    const target = todosDone.filter((todo) => todo.text !== selectedTodo.text);
-    setTodos([...todos, { text: selectedTodo.text, complete: false }]); // todo에서 selected빠진걸로 업데이트
-    setTodosDone(target); // todoDone에 추가하기
+    // * complete:false로 변경시키기
+    const target = todos.filter((el) => {
+      if (el.text === selectedTodo.text) {
+        el.complete = false;
+        return true;
+      } else return true;
+    });
+    setTodos(target);
   };
 
   return (
@@ -48,12 +57,12 @@ function App() {
           <TodoForm addTodo={addTodo} />
           <div className='listDivider'>
             <TodoCurrList
-              todos={todos}
+              todos={todos.filter((todo) => todo.complete === false)}
               moveToDone={moveToDone}
               removeTodoAll={removeTodoAll}
             />
             <TodoDoneList
-              todosDone={todosDone}
+              todos={todos.filter((todo) => todo.complete === true)}
               moveToDo={moveToDo}
               removeTodo={removeTodo}
             />

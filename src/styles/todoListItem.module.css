@@ -8,9 +8,8 @@
   cursor: pointer;
   transition: all 0.2s;
   box-shadow: 0px 5px 5px rgba(0, 0, 0, 0.1); }
-
-.listItem:hover {
-  box-shadow: 0px 5px 5px rgba(0, 0, 0, 0.2); }
+  .listItem:hover {
+    box-shadow: 0px 5px 5px rgba(0, 0, 0, 0.2); }
 
 .itemBtnWrapper {
   display: grid;
@@ -30,9 +29,8 @@
   grid-template-columns: 1fr 180px;
   transition: all 0.2s;
   box-shadow: 0px 5px 5px rgba(0, 0, 0, 0.1); }
-
-.listItemDone:hover {
-  box-shadow: 0px 5px 5px rgba(0, 0, 0, 0.2); }
+  .listItemDone:hover {
+    box-shadow: 0px 5px 5px rgba(0, 0, 0, 0.2); }
 
 .current {
   background-color: #c1b09d; }
