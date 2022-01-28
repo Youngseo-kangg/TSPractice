@@ -5,17 +5,12 @@ import { Pagenation } from './pagenationList';
 
 interface TodoListProps {
   todos: Array<Todo>;
-  moveToDo: MoveToDo;
-  removeTodo: RemoveTodo;
 }
 
-export const TodoDoneList: React.FC<TodoListProps> = ({
-  todos,
-  moveToDo,
-  removeTodo,
-}) => {
+export const TodoDoneList: React.FC<TodoListProps> = ({ todos }) => {
   const [pag, setPags] = useState<Pag>({ start: 0, end: 5 });
   const [list, setLists] = useState<Array<number>>([]);
+
   useEffect(() => {
     let num = todos.length / 5;
     let temp = [];
@@ -24,6 +19,7 @@ export const TodoDoneList: React.FC<TodoListProps> = ({
     }
     setLists(temp);
   }, [todos]);
+
   return (
     <section className={style.todoListSection}>
       <div className={style.todoListTitle}>
@@ -33,20 +29,13 @@ export const TodoDoneList: React.FC<TodoListProps> = ({
       {todos.length === 0 ? (
         <div className={style.todoListNone}>일합시다 일!</div>
       ) : (
-        <>
-          <div className={style.todoListWrapper}>
-            <ul className={style.todoList}>
-              {todos.slice(pag.start, pag.end).map((todo) => (
-                <TodoListDoneItem
-                  key={todo.text}
-                  todo={todo}
-                  removeTodo={removeTodo}
-                  moveToDo={moveToDo}
-                />
-              ))}
-            </ul>
-          </div>
-        </>
+        <div className={style.todoListWrapper}>
+          <ul className={style.todoList}>
+            {todos.slice(pag.start, pag.end).map((todo) => (
+              <TodoListDoneItem key={todo.text} todo={todo} />
+            ))}
+          </ul>
+        </div>
       )}
       {todos.length > 5 ? <Pagenation setPags={setPags} list={list} /> : null}
     </section>

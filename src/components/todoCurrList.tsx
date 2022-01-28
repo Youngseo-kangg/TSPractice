@@ -1,21 +1,18 @@
 import React, { useEffect, useState } from 'react';
+import { useAppDispatch } from '../app/hooks';
+import { removeTodoAll } from '../features/todoSlice';
 import { TodoListItem } from './todoListItem';
 import style from '../styles/todoList.module.scss';
 import { Pagenation } from '../components/pagenationList';
 
 interface TodoListProps {
   todos: Array<Todo>;
-  moveToDone: MoveToDone;
-  removeTodoAll: RemoveTodoAll;
 }
 
-export const TodoCurrList: React.FC<TodoListProps> = ({
-  todos,
-  moveToDone,
-  removeTodoAll,
-}) => {
+export const TodoCurrList: React.FC<TodoListProps> = ({ todos }) => {
   const [pag, setPags] = useState<Pag>({ start: 0, end: 5 });
   const [list, setLists] = useState<Array<number>>([]);
+  const dispatch = useAppDispatch();
   useEffect(() => {
     let num = todos.length / 5;
     let temp = [];
@@ -26,10 +23,14 @@ export const TodoCurrList: React.FC<TodoListProps> = ({
   }, [todos]);
   return (
     <section className={style.todoListSection}>
-      <div className={style.todoListTitleWithBtn}>
+      <div
+        className={
+          todos.length === 0 ? style.todoListTitle : style.todoListTitleWithBtn
+        }
+      >
         <h3>To-do</h3>
         {todos.length !== 0 && (
-          <button onClick={removeTodoAll}>모두 없애기</button>
+          <button onClick={() => dispatch(removeTodoAll())}>모두 없애기</button>
         )}
       </div>
 
@@ -39,11 +40,7 @@ export const TodoCurrList: React.FC<TodoListProps> = ({
         <div className={style.todoListWrapper}>
           <ul className={style.todoList}>
             {todos.slice(pag.start, pag.end).map((todo) => (
-              <TodoListItem
-                key={todo.text}
-                todo={todo}
-                moveToDone={moveToDone}
-              />
+              <TodoListItem key={todo.text} todo={todo} />
             ))}
           </ul>
         </div>

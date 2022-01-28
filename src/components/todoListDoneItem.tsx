@@ -1,17 +1,14 @@
 import React from 'react';
 import style from '../styles/todoListItem.module.scss';
+import { useAppDispatch } from '../app/hooks';
+import { removeTodo, moveToDo } from '../features/todoSlice';
 
 interface todoPropsDone {
   todo: Todo;
-  removeTodo: RemoveTodo;
-  moveToDo: MoveToDo;
 }
 
-export const TodoListDoneItem: React.FC<todoPropsDone> = ({
-  todo,
-  removeTodo,
-  moveToDo,
-}) => {
+export const TodoListDoneItem: React.FC<todoPropsDone> = ({ todo }) => {
+  const dispatch = useAppDispatch();
   return (
     <li
       className={
@@ -22,10 +19,16 @@ export const TodoListDoneItem: React.FC<todoPropsDone> = ({
     >
       <p>{todo.text}</p>
       <div className={style.itemBtnWrapper}>
-        <button className={style.itemBtn} onClick={() => removeTodo(todo.text)}>
+        <button
+          className={style.itemBtn}
+          onClick={() => dispatch(removeTodo(todo))}
+        >
           지우기
         </button>
-        <button className={style.itemBtn} onClick={() => moveToDo(todo)}>
+        <button
+          className={style.itemBtn}
+          onClick={() => dispatch(moveToDo(todo))}
+        >
           다시하기
         </button>
       </div>

@@ -1,4 +1,3 @@
-import react, { useState } from 'react';
 import style from '../styles/todoList.module.scss';
 
 interface PagenationProps {
