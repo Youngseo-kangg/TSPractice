@@ -58,10 +58,10 @@ function App() {
           <TodoForm />
           <div className='listDivider'>
             <TodoCurrList
-              todos={count.todo.filter((todo) => todo.complete === false)}
+              todos={count.filter((todo) => todo.complete === false)}
             />
             <TodoDoneList
-              todos={count.todo.filter((todo) => todo.complete === true)}
+              todos={count.filter((todo) => todo.complete === true)}
             />
           </div>
         </main>
