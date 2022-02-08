@@ -2,7 +2,9 @@
 
 .todoListSection {
   display: grid;
-  grid-template-rows: 50px 1fr 30px;
+  min-height: 200px;
+  grid-template-rows: 50px 1fr;
+  grid-auto-rows: 30px;
   row-gap: 10px;
 }
 .todoListTitle {
